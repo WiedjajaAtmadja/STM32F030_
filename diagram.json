@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "author": "Uri Shaked",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-stm32-bluepill", "id": "stm32", "top": -1.36, "left": 15.57, "attrs": {} },
+    { "type": "wokwi-potentiometer", "id": "pot1", "top": -78.1, "left": 115, "attrs": {} },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 71.15,
+      "left": 105.6,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 61.55,
+      "left": 105.6,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": 37.2,
+      "left": 179.4,
+      "rotate": 90,
+      "attrs": { "color": "green" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led2",
+      "top": 56.8,
+      "left": 179.4,
+      "rotate": 90,
+      "attrs": { "color": "red", "flip": "1" }
+    }
+  ],
+  "connections": [
+    [ "stm32:A10", "$serialMonitor:TX", "green", [] ],
+    [ "stm32:A9", "$serialMonitor:RX", "green", [] ],
+    [ "stm32:GND.2", "pot1:GND", "black", [ "v-0.19", "h46.78" ] ],
+    [ "pot1:VCC", "stm32:3V3.2", "red", [ "v0" ] ],
+    [ "pot1:SIG", "stm32:A0", "green", [ "v0" ] ],
+    [ "stm32:B0", "r1:1", "green", [ "h0" ] ],
+    [ "stm32:B1", "r2:1", "green", [ "h0" ] ],
+    [ "led2:A", "r1:2", "green", [ "h0" ] ],
+    [ "led1:A", "r2:2", "green", [ "h0" ] ],
+    [ "led2:C", "led1:C", "black", [ "h-9.6", "v-29.2" ] ],
+    [ "stm32:GND.2", "led1:C", "black", [ "v0", "h94.07" ] ]
+  ],
+  "serialMonitor": { "convertEol": true, "display": "terminal", "newline": "lf" },
+  "dependencies": {}
+}

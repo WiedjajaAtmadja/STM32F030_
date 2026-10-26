@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+firmware = '.pio/build/STM32F103C8_arduino/firmware.bin'
+elf = '.pio/build/STM32F103C8_arduino/firmware.elf'
