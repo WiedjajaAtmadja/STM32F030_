@@ -1,25 +1,49 @@
 #include <Arduino.h>
+#include <STM32FreeRTOS.h>
 
 constexpr uint8_t LED_RED = PB0;
 constexpr uint8_t LED_GREEN = PB1;
+constexpr uint8_t ANALOG_PIN = PA0;
+
+void taskBlink(void *pvParameters)
+{
+  (void)pvParameters;
+  for (;;)
+  {
+    digitalWrite(LED_RED, HIGH);
+    digitalWrite(LED_GREEN, LOW);
+    vTaskDelay(pdMS_TO_TICKS(500));
+    digitalWrite(LED_RED, LOW);
+    digitalWrite(LED_GREEN, HIGH);
+    vTaskDelay(pdMS_TO_TICKS(500));
+  }
+}
+
+void taskAnalogRead(void *pvParameters)
+{
+  (void)pvParameters;
+  for (;;)
+  {
+    int analogValue = analogRead(ANALOG_PIN);
+    Serial.print("Analog value: ");
+    Serial.println(analogValue);
+    vTaskDelay(pdMS_TO_TICKS(1000));
+  }
+}
 
 void setup()
 {
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_GREEN, OUTPUT);
   Serial.begin(9600);
+
+  xTaskCreate(taskBlink, "Blink", 128, NULL, 1, NULL);
+  xTaskCreate(taskAnalogRead, "Analog", 256, NULL, 1, NULL);
+
+  vTaskStartScheduler();
 }
 
 void loop()
 {
-    // read the analog input value from pin PA0 and print it to the serial monitor
-  int analogValue = analogRead(PA0);
-  Serial.print("Analog value: ");
-  Serial.println(analogValue);
-  digitalWrite(LED_RED, HIGH);
-  digitalWrite(LED_GREEN, LOW);
-  delay(500);
-  digitalWrite(LED_RED, LOW);
-  digitalWrite(LED_GREEN, HIGH);
-  delay(500);
+  // tidak dipakai, scheduler FreeRTOS yang menjalankan task
 }
